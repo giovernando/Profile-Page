@@ -224,7 +224,7 @@ function App() {
         transition={{ duration: 0.5 }}
       >
         <motion.div
-          className={`hero-section hero-fixed ${isFlipping ? 'flip' : ''}`}
+          className={`hero-section ${isFlipping ? 'flip' : ''}`}
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
@@ -318,7 +318,7 @@ function App() {
         </div>
       )}
       {showFavorites && favorites.length > 0 && (
-        <div className="favorites-section favorites-scroll">
+        <div className="favorites-section">
           <h2 className="favorites-title">Favorite Profiles</h2>
           <div className="favorites-grid">
             {favorites.map((favUser, index) => (

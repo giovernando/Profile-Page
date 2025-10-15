@@ -1,23 +1,25 @@
 .app {
-  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   min-height: 100vh;
   transition: background 0.5s ease;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  padding: 2rem;
-  overflow-y: auto;
+  background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+  position: relative;
 }
 
-.hero-fixed {
-  position: fixed;
-  top: 2rem;
-  left: 2rem;
-  z-index: 100;
-  width: 300px;
-}
-
-.favorites-scroll {
-  margin-left: 350px;
-  padding-top: 2rem;
+.app::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+              radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+              radial-gradient(circle at 40% 40%, rgba(120, 219, 226, 0.3) 0%, transparent 50%);
+  pointer-events: none;
 }
 
 .hero-section {
@@ -237,13 +239,15 @@
 }
 
 .favorites-section {
-  margin-top: 2rem;
+  margin-top: 6rem;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 20px;
   padding: 2rem;
   backdrop-filter: blur(10px);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
   animation: fadeIn 0.5s ease-in-out;
+  max-width: 800px;
+  width: 100%;
 }
 
 .favorites-title {
@@ -518,16 +522,6 @@
 @media (max-width: 768px) {
   .app {
     padding: 0.5rem;
-  }
-
-  .hero-fixed {
-    position: static;
-    width: 100%;
-    margin-bottom: 2rem;
-  }
-
-  .favorites-scroll {
-    margin-left: 0;
   }
 
   .hero-section {
