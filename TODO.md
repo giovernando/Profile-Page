@@ -1,0 +1,30 @@
+# TODO for Profile Page Task
+
+- [x] Update src/App.tsx: Remove default Vite/React content, add state for user data, useEffect to fetch from https://randomuser.me/api/, handle loading/error, render profile card with picture, name, email, phone, location.
+- [x] Update src/App.css: Add creative styling for profile card (gradients, shadows, hover effects, responsive).
+- [x] Update src/index.css: Adjust global styles for overall theme (background, fonts, etc.).
+- [x] Test: Run npm run dev and verify API fetch and design.
+- [x] Add refresh button to fetch new user data.
+- [x] Add icons (emojis) for each detail item.
+- [x] Add fade-in animation for the profile card.
+- [x] Display additional data: age and gender.
+- [x] Change to Hero Section: Large profile picture, full name, country, email.
+- [x] Add flip or fade-in effect on new data load.
+- [x] Dynamic background color based on gender or country.
+- [x] Add expandable Detail Section: birth date, full address, username, phone, coordinates.
+- [x] Integrate map view with Leaflet.js to show user location.
+- [x] Install react-leaflet and leaflet dependencies.
+- [x] Add animated loader (skeleton UI or loading dots) while fetching data.
+- [x] Add Gallery Section: Generate 5 profiles in grid (3x2), hover flip to show back details, filter by gender with toggle switch.
+- [x] Add Theme Switcher: Automatic color themes based on API data (gender and age).
+- [ ] Add Neumorphism Soft UI Style: Cards with soft shadows like iOS buttons.
+- [ ] Add Glassmorphism Style: Transparent glass effect with blur background.
+- [x] Add Favorite System: ⭐ button to add/remove favorites, stored in localStorage.
+- [x] Add Favorites View: Section to display saved favorite profiles.
+- [x] Add Framer Motion animations: Fade in/out profile card, slide gallery items, pulse loading.
+- [ ] Responsive Card Layout: Grid auto-adjust 1→2→3 columns, buttons large on mobile, font size text-sm min.
+- [x] Mobile-First Responsive Layout: Ensure layout stays neat on small screens - full width cards, large buttons, no overlapping text.
+- [ ] Guided Layout / Step Interface: Tabs for Profile Overview, Personal Details, Location, Gallery / Friends.
+- [x] Add Filter and Query Parameters: Dropdown for Gender (Male/Female/All) and Nationality (US/FR/GB/Random), update API calls to use query parameters like ?gender=female&nat=us,fr,gb.
+- [x] Add Profile Detail View: Add "View Details" button in gallery and favorites cards to show full profile details in a modal/section.
+- [x] Add API caching with localStorage (5 minutes expiry)
