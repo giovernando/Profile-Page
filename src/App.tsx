@@ -53,7 +53,6 @@ function App() {
   const [selectedProfile, setSelectedProfile] = useState<User | null>(null);
   const [showProfileDetails, setShowProfileDetails] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [showBackToTop, setShowBackToTop] = useState(false);
   const [multipleProfiles, setMultipleProfiles] = useState<User[]>([]);
   const [showMultipleProfiles, setShowMultipleProfiles] = useState(false);
   const [multipleLoading, setMultipleLoading] = useState(false);
@@ -155,9 +154,7 @@ function App() {
     setShowProfileDetails(false);
   };
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+
 
   const generateMultipleProfiles = () => {
     setMultipleLoading(true);
@@ -191,16 +188,8 @@ function App() {
     const handleChange = (e: MediaQueryListEvent) => setIsDarkMode(e.matches);
     mediaQuery.addEventListener('change', handleChange);
 
-    // Handle scroll for back to top button
-    const handleScroll = () => {
-      setShowBackToTop(window.scrollY > 300);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-
     return () => {
       mediaQuery.removeEventListener('change', handleChange);
-      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
@@ -307,23 +296,24 @@ function App() {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.8 }}
           >
-
             <button onClick={fetchUser} className="refresh-button" disabled={loading}>
               🔁 Generate New Profile
             </button>
 
-            <button onClick={() => user && viewProfileDetails(user)} className="view-details-button">
-              View Details
-            </button>
-            <button onClick={() => user && toggleFavorite(user)} className="favorite-button" aria-label={user && isFavorite(user) ? 'Remove from favorites' : 'Add to favorites'}>
-              {user && isFavorite(user) ? '⭐ Remove Favorite' : '☆ Add to Favorite'}
-            </button>
-            <button onClick={() => setShowFavorites(!showFavorites)} className="favorites-view-button">
-              {showFavorites ? 'Hide Favorites' : 'View Favorites'} ({favorites.length})
-            </button>
-            <button onClick={generateMultipleProfiles} className="generate-multiple-button" disabled={multipleLoading}>
-              {multipleLoading ? 'Generating...' : 'Generate 10 Random Profiles'}
-            </button>
+            <div className="bottom-buttons">
+              <button onClick={() => user && viewProfileDetails(user)} className="view-details-button">
+                View Details
+              </button>
+              <button onClick={() => user && toggleFavorite(user)} className="favorite-button" aria-label={user && isFavorite(user) ? 'Remove from favorites' : 'Add to favorites'}>
+                {user && isFavorite(user) ? '⭐ Remove Favorite' : '☆ Add to Favorite'}
+              </button>
+              <button onClick={() => setShowFavorites(!showFavorites)} className="favorites-view-button">
+                {showFavorites ? 'Hide Favorites' : 'View Favorites'} ({favorites.length})
+              </button>
+              <button onClick={generateMultipleProfiles} className="generate-multiple-button" disabled={multipleLoading}>
+                {multipleLoading ? 'Generating...' : 'Generate 10 Random Profiles'}
+              </button>
+            </div>
           </motion.div>
         </motion.div>
       {showDetails && (
@@ -353,12 +343,12 @@ function App() {
           <div className="map-container">
             <MapContainer
               center={[parseFloat(user.location.coordinates.latitude), parseFloat(user.location.coordinates.longitude)]}
-              zoom={13}
+              zoom={8}
               style={{ height: '300px', width: '100%' }}
             >
               <TileLayer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+                attribution='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
               />
               <Marker position={[parseFloat(user.location.coordinates.latitude), parseFloat(user.location.coordinates.longitude)]}>
                 <Popup>
@@ -370,77 +360,99 @@ function App() {
           </div>
         </div>
       )}
-      {/* Favorites Section */}
-      {showFavorites && favorites.length > 0 && (
-        <div className="favorites-section">
-          <h2 className="favorites-title">Favorite Profiles</h2>
-          <div className="favorites-grid">
-            {favorites.map((favUser, index) => (
-              <motion.div
-                key={index}
-                className="favorite-card"
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ scale: 1.05, y: -10, transition: { duration: 0.2 } }}
-                whileTap={{ scale: 0.95, transition: { duration: 0.1 } }}
-              >
-                <img src={favUser.picture.large} alt={`${favUser.name.first} ${favUser.name.last}`} className="favorite-picture" />
-                <div className="favorite-info">
-                  <h3 className="favorite-name">{favUser.name.first} {favUser.name.last}</h3>
-                  <p className="favorite-country">🌍 {favUser.location.country}</p>
-                  <p className="favorite-email">📧 {favUser.email}</p>
-                  <p className="favorite-age">🎂 {favUser.dob.age} years old</p>
-                  <div className="favorite-buttons">
-                    <button onClick={() => viewProfileDetails(favUser)} className="view-details-button">
-                      View Details
-                    </button>
-                    <button onClick={() => toggleFavorite(favUser)} className="favorite-button" aria-label="Remove from favorites">
-                      ⭐ Remove
-                    </button>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      )}
+      {/* Favorites Modal */}
+      <AnimatePresence>
+        {showFavorites && favorites.length > 0 && (
+          <motion.div
+            className="favorites-modal"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="modal-content">
+              <button onClick={() => setShowFavorites(false)} className="close-modal-button" aria-label="Close favorites modal">✕</button>
+              <h2 className="favorites-title">Favorite Profiles</h2>
+              <div className="favorites-grid">
+                {favorites.map((favUser, index) => (
+                  <motion.div
+                    key={index}
+                    className="favorite-card"
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    whileHover={{ scale: 1.05, y: -10, transition: { duration: 0.2 } }}
+                    whileTap={{ scale: 0.95, transition: { duration: 0.1 } }}
+                  >
+                    <img src={favUser.picture.large} alt={`${favUser.name.first} ${favUser.name.last}`} className="favorite-picture" />
+                    <div className="favorite-info">
+                      <h3 className="favorite-name">{favUser.name.first} {favUser.name.last}</h3>
+                      <p className="favorite-country">🌍 {favUser.location.country}</p>
+                      <p className="favorite-email">📧 {favUser.email}</p>
+                      <p className="favorite-age">🎂 {favUser.dob.age} years old</p>
+                      <div className="favorite-buttons">
+                        <button onClick={() => viewProfileDetails(favUser)} className="view-details-button">
+                          View Details
+                        </button>
+                        <button onClick={() => toggleFavorite(favUser)} className="favorite-button" aria-label="Remove from favorites">
+                          ⭐ Remove
+                        </button>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      {/* Multiple Profiles Section */}
-      {showMultipleProfiles && multipleProfiles.length > 0 && (
-        <div className="multiple-profiles-section">
-          <h2 className="multiple-profiles-title">Random Profiles</h2>
-          <div className="multiple-profiles-grid">
-            {multipleProfiles.map((profile, index) => (
-              <motion.div
-                key={index}
-                className="multiple-profile-card"
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ scale: 1.05, y: -10, transition: { duration: 0.2 } }}
-                whileTap={{ scale: 0.95, transition: { duration: 0.1 } }}
-              >
-                <img src={profile.picture.large} alt={`${profile.name.first} ${profile.name.last}`} className="multiple-profile-picture" />
-                <div className="multiple-profile-info">
-                  <h3 className="multiple-profile-name">{profile.name.first} {profile.name.last}</h3>
-                  <p className="multiple-profile-country">🌍 {profile.location.country}</p>
-                  <p className="multiple-profile-email">📧 {profile.email}</p>
-                  <p className="multiple-profile-age">🎂 {profile.dob.age} years old</p>
-                  <div className="multiple-profile-buttons">
-                    <button onClick={() => viewProfileDetails(profile)} className="view-details-button">
-                      View Details
-                    </button>
-                    <button onClick={() => toggleFavorite(profile)} className="favorite-button" aria-label={isFavorite(profile) ? 'Remove from favorites' : 'Add to favorites'}>
-                      {isFavorite(profile) ? '⭐ Remove' : '☆ Add Favorite'}
-                    </button>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      )}
+      {/* Multiple Profiles Modal */}
+      <AnimatePresence>
+        {showMultipleProfiles && multipleProfiles.length > 0 && (
+          <motion.div
+            className="multiple-profiles-modal"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="modal-content">
+              <button onClick={() => setShowMultipleProfiles(false)} className="close-modal-button" aria-label="Close multiple profiles modal">✕</button>
+              <h2 className="multiple-profiles-title">Random Profiles</h2>
+              <div className="multiple-profiles-grid">
+                {multipleProfiles.map((profile, index) => (
+                  <motion.div
+                    key={index}
+                    className="multiple-profile-card"
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    whileHover={{ scale: 1.05, y: -10, transition: { duration: 0.2 } }}
+                    whileTap={{ scale: 0.95, transition: { duration: 0.1 } }}
+                  >
+                    <img src={profile.picture.large} alt={`${profile.name.first} ${profile.name.last}`} className="multiple-profile-picture" />
+                    <div className="multiple-profile-info">
+                      <h3 className="multiple-profile-name">{profile.name.first} {profile.name.last}</h3>
+                      <p className="multiple-profile-country">🌍 {profile.location.country}</p>
+                      <p className="multiple-profile-email">📧 {profile.email}</p>
+                      <p className="multiple-profile-age">🎂 {profile.dob.age} years old</p>
+                      <div className="multiple-profile-buttons">
+                        <button onClick={() => viewProfileDetails(profile)} className="view-details-button">
+                          View Details
+                        </button>
+                        <button onClick={() => toggleFavorite(profile)} className="favorite-button" aria-label={isFavorite(profile) ? 'Remove from favorites' : 'Add to favorites'}>
+                          {isFavorite(profile) ? '⭐ Remove' : '☆ Add Favorite'}
+                        </button>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {galleryUsers.length > 0 && (
         <div className="gallery-section">
@@ -536,12 +548,12 @@ function App() {
             <div className="modal-map">
               <MapContainer
                 center={[parseFloat(selectedProfile.location.coordinates.latitude), parseFloat(selectedProfile.location.coordinates.longitude)]}
-                zoom={13}
+                zoom={8}
                 style={{ height: '300px', width: '100%' }}
               >
                 <TileLayer
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+                  attribution='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
                 />
                 <Marker position={[parseFloat(selectedProfile.location.coordinates.latitude), parseFloat(selectedProfile.location.coordinates.longitude)]}>
                   <Popup>
@@ -555,22 +567,7 @@ function App() {
         </motion.div>
       )}
 
-      {/* Back to Top FAB */}
-      <AnimatePresence>
-        {showBackToTop && (
-          <motion.button
-            className="back-to-top-fab"
-            onClick={scrollToTop}
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            transition={{ duration: 0.3 }}
-            aria-label="Back to top"
-          >
-            ↑ Back to Top
-          </motion.button>
-        )}
-      </AnimatePresence>
+
 
       {/* Toast Container */}
       <ToastContainer

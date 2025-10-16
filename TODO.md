@@ -1,7 +1,7 @@
-# TODO: Improve Layout and Styling for Random User and Favorite Profiles
+# TODO: Remove Back to Top Feature
 
-- [x] Make grid layout more consistent between hero section and favorites
-- [x] Create uniform card styling for favorites similar to hero section but smaller
-- [x] Add consistent spacing, padding, and alignment
-- [x] Add hover effects for better interactivity
-- [x] Ensure typography consistency across components
+- [x] Remove showBackToTop state
+- [x] Remove scrollToTop function
+- [x] Remove back-to-top button from JSX
+- [x] Remove scroll event listener
+- [x] Remove back-to-top related code from toggleFavorite and generateMultipleProfiles
