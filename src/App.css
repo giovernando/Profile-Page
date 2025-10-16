@@ -4,7 +4,7 @@
   align-items: center;
   min-height: 100vh;
   transition: background 0.5s ease;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
   position: relative;
 }
@@ -105,6 +105,7 @@
   font-size: 3rem;
   margin: 0 0 0.5rem 0;
   font-weight: 700;
+  font-family: 'Playfair Display', serif;
 }
 
 .hero-country, .hero-email {
@@ -316,6 +317,7 @@
   font-size: 2.5rem;
   margin-bottom: 2rem;
   font-weight: 700;
+  font-family: 'Playfair Display', serif;
 }
 
 .favorites-grid {
@@ -327,17 +329,28 @@
 }
 
 .favorite-card {
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 20px;
   padding: 1.5rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  box-shadow:
+    8px 8px 16px rgba(163, 177, 198, 0.6),
+    -8px -8px 16px rgba(255, 255, 255, 0.8),
+    0 8px 32px rgba(31, 38, 135, 0.37);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  position: relative;
+  overflow: hidden;
 }
 
 .favorite-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+  box-shadow:
+    12px 12px 24px rgba(163, 177, 198, 0.8),
+    -12px -12px 24px rgba(255, 255, 255, 0.9),
+    0 12px 40px rgba(31, 38, 135, 0.45);
+  background: rgba(255, 255, 255, 0.35);
 }
 
 .favorite-picture {
@@ -362,6 +375,7 @@
   font-size: 1.5rem;
   margin: 0 0 0.5rem 0;
   font-weight: 700;
+  font-family: 'Playfair Display', serif;
 }
 
 .favorite-country,
@@ -415,6 +429,7 @@
   font-size: 2.5rem;
   margin-bottom: 2rem;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  font-family: 'Playfair Display', serif;
 }
 
 
@@ -730,6 +745,14 @@
 
   .favorite-card {
     padding: 1rem;
+    box-shadow:
+      6px 6px 12px rgba(163, 177, 198, 0.4),
+      -6px -6px 12px rgba(255, 255, 255, 0.6),
+      0 6px 24px rgba(31, 38, 135, 0.3);
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
   }
 
   .favorite-picture {
@@ -863,6 +886,7 @@
   font-size: 2.5rem;
   margin-bottom: 2rem;
   font-weight: 700;
+  font-family: 'Playfair Display', serif;
 }
 
 .multiple-profiles-grid {
@@ -874,17 +898,28 @@
 }
 
 .multiple-profile-card {
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 20px;
   padding: 1.5rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  box-shadow:
+    8px 8px 16px rgba(163, 177, 198, 0.6),
+    -8px -8px 16px rgba(255, 255, 255, 0.8),
+    0 8px 32px rgba(31, 38, 135, 0.37);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  position: relative;
+  overflow: hidden;
 }
 
 .multiple-profile-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+  box-shadow:
+    12px 12px 24px rgba(163, 177, 198, 0.8),
+    -12px -12px 24px rgba(255, 255, 255, 0.9),
+    0 12px 40px rgba(31, 38, 135, 0.45);
+  background: rgba(255, 255, 255, 0.35);
 }
 
 .multiple-profile-picture {
@@ -909,6 +944,7 @@
   font-size: 1.5rem;
   margin: 0 0 0.5rem 0;
   font-weight: 700;
+  font-family: 'Playfair Display', serif;
 }
 
 .multiple-profile-country,
@@ -968,6 +1004,14 @@
 
   .multiple-profile-card {
     padding: 1rem;
+    box-shadow:
+      6px 6px 12px rgba(163, 177, 198, 0.4),
+      -6px -6px 12px rgba(255, 255, 255, 0.6),
+      0 6px 24px rgba(31, 38, 135, 0.3);
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
   }
 
   .multiple-profile-picture {
