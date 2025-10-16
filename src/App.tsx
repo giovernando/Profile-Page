@@ -294,7 +294,7 @@ function App() {
             transition={{ duration: 0.5, delay: 0.8 }}
           >
             <button onClick={fetchUser} className="refresh-button" disabled={loading}>
-              🔁 Generate New Profile
+               Generate New Profile
             </button>
 
             <div className="bottom-buttons">
