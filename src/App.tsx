@@ -43,9 +43,9 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isFlipping, setIsFlipping] = useState(false);
-  const [showDetails, setShowDetails] = useState(false);
-  const [galleryUsers, setGalleryUsers] = useState<User[]>([]);
-  const [galleryLoading, setGalleryLoading] = useState(false);
+  const [showDetails] = useState(false); 
+  const [galleryUsers] = useState<User[]>([]);
+  const [] = useState(false);
   // Filters removed - now using random users
 
   const [favorites, setFavorites] = useState<User[]>([]);
@@ -57,13 +57,6 @@ function App() {
   const [showMultipleProfiles, setShowMultipleProfiles] = useState(false);
   const [multipleLoading, setMultipleLoading] = useState(false);
 
-  const getBackgroundColor = (gender: string, age: number) => {
-    if (age > 50) return 'linear-gradient(135deg, #2c3e50 0%, #34495e 25%, #2c3e50 50%, #34495e 75%, #2c3e50 100%)'; // Deep blue-grey with subtle variations
-    if (age < 25) return 'linear-gradient(135deg, #3498db 0%, #2980b9 25%, #3498db 50%, #2980b9 75%, #3498db 100%)'; // Vibrant blue with depth
-    if (gender === 'male') return 'linear-gradient(135deg, #8e44ad 0%, #9b59b6 25%, #8e44ad 50%, #9b59b6 75%, #8e44ad 100%)'; // Rich purple with variations
-    if (gender === 'female') return 'linear-gradient(135deg, #e74c3c 0%, #c0392b 25%, #e74c3c 50%, #c0392b 75%, #e74c3c 100%)'; // Warm red with depth
-    return 'linear-gradient(135deg, #27ae60 0%, #2ecc71 25%, #27ae60 50%, #2ecc71 75%, #27ae60 100%)'; // Natural green tones
-  };
 
   // Deep landscape-inspired gradients for moody, intense vibe
   const getDeepLandscapeBackground = (gender: string, age: number) => {
@@ -120,7 +113,7 @@ function App() {
           setLoading(false);
           setTimeout(() => setIsFlipping(false), 500); // Reset flip after animation
         })
-        .catch(err => {
+        .catch(() => {
           setError('Failed to fetch user data');
           setLoading(false);
           setIsFlipping(false);
@@ -128,20 +121,6 @@ function App() {
     }
   };
 
-  const fetchGalleryUsers = () => {
-    setGalleryLoading(true);
-    const url = `https://randomuser.me/api/?results=5`;
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        setGalleryUsers(data.results);
-        setGalleryLoading(false);
-      })
-      .catch(err => {
-        console.error('Failed to fetch gallery users:', err);
-        setGalleryLoading(false);
-      });
-  };
 
   const filteredGalleryUsers = galleryUsers;
 
