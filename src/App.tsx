@@ -158,14 +158,14 @@ function App() {
 
   const generateMultipleProfiles = () => {
     setMultipleLoading(true);
-    const url = `https://randomuser.me/api/?results=10`;
+    const url = `https://randomuser.me/api/?results=12`;
     fetch(url)
       .then(response => response.json())
       .then(data => {
         setMultipleProfiles(data.results);
         setShowMultipleProfiles(true);
         setMultipleLoading(false);
-        toast.success('Generated 10 random profiles!');
+        toast.success('Generated 12 random profiles!');
       })
       .catch(err => {
         console.error('Failed to fetch multiple profiles:', err);
@@ -311,7 +311,7 @@ function App() {
                 {showFavorites ? 'Hide Favorites' : 'View Favorites'} ({favorites.length})
               </button>
               <button onClick={generateMultipleProfiles} className="generate-multiple-button" disabled={multipleLoading}>
-                {multipleLoading ? 'Generating...' : 'Generate 10 Random Profiles'}
+                {multipleLoading ? 'Generating...' : 'Generate 12 Random Profiles'}
               </button>
             </div>
           </motion.div>

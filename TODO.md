@@ -1,7 +1,5 @@
-# TODO: Remove Back to Top Feature
+# TODO: Change Generate Multiple Profiles to 12
 
-- [x] Remove showBackToTop state
-- [x] Remove scrollToTop function
-- [x] Remove back-to-top button from JSX
-- [x] Remove scroll event listener
-- [x] Remove back-to-top related code from toggleFavorite and generateMultipleProfiles
+- [x] Update API call to fetch 12 profiles instead of 10
+- [x] Update button text to "Generate 12 Random Profiles"
+- [x] Update success toast message to "Generated 12 random profiles!"
