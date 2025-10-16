@@ -58,11 +58,29 @@ function App() {
   const [multipleLoading, setMultipleLoading] = useState(false);
 
   const getBackgroundColor = (gender: string, age: number) => {
-    if (age > 50) return 'linear-gradient(135deg, #434343 0%, #000000 100%)'; // Grey elegant
-    if (age < 25) return 'linear-gradient(135deg, #00d2d3 0%, #54a0ff 100%)'; // Cyan fresh
-    if (gender === 'male') return 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'; // Blue dark
-    if (gender === 'female') return 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'; // Pink pastel
-    return 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+    if (age > 50) return 'linear-gradient(135deg, #2c3e50 0%, #34495e 25%, #2c3e50 50%, #34495e 75%, #2c3e50 100%)'; // Deep blue-grey with subtle variations
+    if (age < 25) return 'linear-gradient(135deg, #3498db 0%, #2980b9 25%, #3498db 50%, #2980b9 75%, #3498db 100%)'; // Vibrant blue with depth
+    if (gender === 'male') return 'linear-gradient(135deg, #8e44ad 0%, #9b59b6 25%, #8e44ad 50%, #9b59b6 75%, #8e44ad 100%)'; // Rich purple with variations
+    if (gender === 'female') return 'linear-gradient(135deg, #e74c3c 0%, #c0392b 25%, #e74c3c 50%, #c0392b 75%, #e74c3c 100%)'; // Warm red with depth
+    return 'linear-gradient(135deg, #27ae60 0%, #2ecc71 25%, #27ae60 50%, #2ecc71 75%, #27ae60 100%)'; // Natural green tones
+  };
+
+  // Deep landscape-inspired gradients for moody, intense vibe
+  const getDeepLandscapeBackground = (gender: string, age: number) => {
+    const deepLandscapeGradients = [
+      'linear-gradient(135deg, #0f1419 0%, #1a2332 25%, #0f1419 50%, #1a2332 75%, #0f1419 100%)', // Deep ocean night
+      'linear-gradient(135deg, #2d1b69 0%, #11998e 25%, #2d1b69 50%, #11998e 75%, #2d1b69 100%)', // Deep sunset purple
+      'linear-gradient(135deg, #3c2a21 0%, #d2691e 25%, #3c2a21 50%, #d2691e 75%, #3c2a21 100%)', // Deep desert earth
+      'linear-gradient(135deg, #0d4f3c 0%, #1e3a5f 25%, #0d4f3c 50%, #1e3a5f 75%, #0d4f3c 100%)', // Deep mountain lake
+      'linear-gradient(135deg, #1a2e1a 0%, #4a5d23 25%, #1a2e1a 50%, #4a5d23 75%, #1a2e1a 100%)', // Deep forest canopy
+      'linear-gradient(135deg, #1a1a2e 0%, #16213e 25%, #1a1a2e 50%, #16213e 75%, #1a1a2e 100%)', // Deep twilight
+      'linear-gradient(135deg, #2d1810 0%, #8b4513 25%, #2d1810 50%, #8b4513 75%, #2d1810 100%)', // Deep autumn
+      'linear-gradient(135deg, #2f2f2f 0%, #4a4a4a 25%, #2f2f2f 50%, #4a4a4a 75%, #2f2f2f 100%)', // Deep misty mountains
+    ];
+
+    // Use age and gender to select different deep landscape gradients
+    const index = (age + gender.charCodeAt(0)) % deepLandscapeGradients.length;
+    return deepLandscapeGradients[index];
   };
 
   const fetchUser = () => {
@@ -195,7 +213,7 @@ function App() {
 
   if (loading) {
     return (
-      <div className="app" style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
+      <div className="app" style={{ background: 'linear-gradient(135deg, #0f1419 0%, #1a2332 25%, #0f1419 50%, #1a2332 75%, #0f1419 100%)' }}>
         <motion.div
           className="hero-section skeleton"
           initial={{ opacity: 0, scale: 0.8 }}
@@ -256,7 +274,7 @@ function App() {
       <motion.div
         key={user.login.username}
         className={`app ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
-        style={{ background: user ? getBackgroundColor(user.gender, user.dob.age) : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}
+        style={{ background: user ? getDeepLandscapeBackground(user.gender, user.dob.age) : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
