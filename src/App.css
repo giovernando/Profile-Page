@@ -9,6 +9,43 @@
   position: relative;
 }
 
+.app.dark-mode {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+}
+
+.app.dark-mode .hero-section,
+.app.dark-mode .details-section,
+.app.dark-mode .favorites-section,
+.app.dark-mode .gallery-section,
+.app.dark-mode .profile-details-modal .modal-content {
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(15px);
+}
+
+.app.dark-mode .hero-info,
+.app.dark-mode .favorite-info,
+.app.dark-mode .modal-info,
+.app.dark-mode .detail-label,
+.app.dark-mode .detail-value,
+.app.dark-mode .favorites-title,
+.app.dark-mode .gallery-title,
+.app.dark-mode .modal-name,
+.app.dark-mode .modal-country,
+.app.dark-mode .modal-email,
+.app.dark-mode .modal-age,
+.app.dark-mode .modal-gender {
+  color: #ffffff;
+}
+
+.app.dark-mode .gallery-card .card-front,
+.app.dark-mode .gallery-card .card-back {
+  background: rgba(0, 0, 0, 0.9);
+}
+
+.app.dark-mode .back-details p {
+  color: #ffffff;
+}
+
 .app::before {
   content: '';
   position: absolute;
@@ -239,7 +276,7 @@
 }
 
 .favorites-section {
-  margin-top: 6rem;
+  margin-top: 10rem;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 20px;
   padding: 2rem;
@@ -302,6 +339,10 @@
   color: rgba(255, 255, 255, 0.8);
   margin: 0.25rem 0;
   font-size: 0.9rem;
+}
+
+.favorite-info .view-details-button {
+  margin-bottom: 0.5rem;
 }
 
 .remove-favorite-button {

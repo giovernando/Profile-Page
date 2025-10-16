@@ -50,6 +50,7 @@ function App() {
   const [showFavorites, setShowFavorites] = useState(false);
   const [selectedProfile, setSelectedProfile] = useState<User | null>(null);
   const [showProfileDetails, setShowProfileDetails] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   const getBackgroundColor = (gender: string, age: number) => {
     if (age > 50) return 'linear-gradient(135deg, #434343 0%, #000000 100%)'; // Grey elegant
@@ -152,6 +153,15 @@ function App() {
     if (savedFavorites) {
       setFavorites(JSON.parse(savedFavorites));
     }
+
+    // Check system preference for dark mode
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    setIsDarkMode(mediaQuery.matches);
+
+    const handleChange = (e: MediaQueryListEvent) => setIsDarkMode(e.matches);
+    mediaQuery.addEventListener('change', handleChange);
+
+    return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);
 
   if (loading) {
@@ -216,7 +226,7 @@ function App() {
     <AnimatePresence mode="wait">
       <motion.div
         key={user.login.username}
-        className="app"
+        className={`app ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
         style={{ background: user ? getBackgroundColor(user.gender, user.dob.age) : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -265,7 +275,7 @@ function App() {
             <button onClick={() => user && viewProfileDetails(user)} className="view-details-button">
               View Details
             </button>
-            <button onClick={() => user && toggleFavorite(user)} className="favorite-button">
+            <button onClick={() => user && toggleFavorite(user)} className="favorite-button" aria-label={user && isFavorite(user) ? 'Remove from favorites' : 'Add to favorites'}>
               {user && isFavorite(user) ? '⭐ Remove Favorite' : '☆ Add to Favorite'}
             </button>
             <button onClick={() => setShowFavorites(!showFavorites)} className="favorites-view-button">
@@ -332,7 +342,7 @@ function App() {
                   <button onClick={() => viewProfileDetails(favUser)} className="view-details-button">
                     View Details
                   </button>
-                  <button onClick={() => toggleFavorite(favUser)} className="remove-favorite-button">
+                  <button onClick={() => toggleFavorite(favUser)} className="remove-favorite-button" aria-label="Remove from favorites">
                     Remove from Favorites
                   </button>
                 </div>
@@ -399,7 +409,7 @@ function App() {
           transition={{ duration: 0.3 }}
         >
           <div className="modal-content">
-            <button onClick={closeProfileDetails} className="close-modal-button">✕</button>
+            <button onClick={closeProfileDetails} className="close-modal-button" aria-label="Close profile details modal">✕</button>
             <div className="modal-header">
               <img src={selectedProfile.picture.large} alt={`${selectedProfile.name.first} ${selectedProfile.name.last}`} className="modal-picture" />
               <div className="modal-info">
