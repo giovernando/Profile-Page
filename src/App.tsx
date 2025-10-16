@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import { motion, AnimatePresence } from 'framer-motion'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import 'leaflet/dist/leaflet.css'
 import './App.css'
 
@@ -51,6 +53,10 @@ function App() {
   const [selectedProfile, setSelectedProfile] = useState<User | null>(null);
   const [showProfileDetails, setShowProfileDetails] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [showBackToTop, setShowBackToTop] = useState(false);
+  const [multipleProfiles, setMultipleProfiles] = useState<User[]>([]);
+  const [showMultipleProfiles, setShowMultipleProfiles] = useState(false);
+  const [multipleLoading, setMultipleLoading] = useState(false);
 
   const getBackgroundColor = (gender: string, age: number) => {
     if (age > 50) return 'linear-gradient(135deg, #434343 0%, #000000 100%)'; // Grey elegant
@@ -130,8 +136,10 @@ function App() {
     let newFavorites;
     if (isFavorite(user)) {
       newFavorites = favorites.filter(fav => fav.login.username !== user.login.username);
+      toast.info('Removed from Favorites!');
     } else {
       newFavorites = [...favorites, user];
+      toast.success('Added to Favorites successfully!');
     }
     setFavorites(newFavorites);
     localStorage.setItem('favorites', JSON.stringify(newFavorites));
@@ -145,6 +153,28 @@ function App() {
   const closeProfileDetails = () => {
     setSelectedProfile(null);
     setShowProfileDetails(false);
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const generateMultipleProfiles = () => {
+    setMultipleLoading(true);
+    const url = `https://randomuser.me/api/?results=10`;
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        setMultipleProfiles(data.results);
+        setShowMultipleProfiles(true);
+        setMultipleLoading(false);
+        toast.success('Generated 10 random profiles!');
+      })
+      .catch(err => {
+        console.error('Failed to fetch multiple profiles:', err);
+        setMultipleLoading(false);
+        toast.error('Failed to generate profiles');
+      });
   };
 
   useEffect(() => {
@@ -161,7 +191,17 @@ function App() {
     const handleChange = (e: MediaQueryListEvent) => setIsDarkMode(e.matches);
     mediaQuery.addEventListener('change', handleChange);
 
-    return () => mediaQuery.removeEventListener('change', handleChange);
+    // Handle scroll for back to top button
+    const handleScroll = () => {
+      setShowBackToTop(window.scrollY > 300);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      mediaQuery.removeEventListener('change', handleChange);
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   if (loading) {
@@ -281,6 +321,9 @@ function App() {
             <button onClick={() => setShowFavorites(!showFavorites)} className="favorites-view-button">
               {showFavorites ? 'Hide Favorites' : 'View Favorites'} ({favorites.length})
             </button>
+            <button onClick={generateMultipleProfiles} className="generate-multiple-button" disabled={multipleLoading}>
+              {multipleLoading ? 'Generating...' : 'Generate 10 Random Profiles'}
+            </button>
           </motion.div>
         </motion.div>
       {showDetails && (
@@ -327,30 +370,78 @@ function App() {
           </div>
         </div>
       )}
+      {/* Favorites Section */}
       {showFavorites && favorites.length > 0 && (
         <div className="favorites-section">
           <h2 className="favorites-title">Favorite Profiles</h2>
           <div className="favorites-grid">
             {favorites.map((favUser, index) => (
-              <div key={index} className="favorite-card">
+              <motion.div
+                key={index}
+                className="favorite-card"
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ scale: 1.05, y: -10, transition: { duration: 0.2 } }}
+                whileTap={{ scale: 0.95, transition: { duration: 0.1 } }}
+              >
                 <img src={favUser.picture.large} alt={`${favUser.name.first} ${favUser.name.last}`} className="favorite-picture" />
                 <div className="favorite-info">
                   <h3 className="favorite-name">{favUser.name.first} {favUser.name.last}</h3>
                   <p className="favorite-country">🌍 {favUser.location.country}</p>
                   <p className="favorite-email">📧 {favUser.email}</p>
                   <p className="favorite-age">🎂 {favUser.dob.age} years old</p>
-                  <button onClick={() => viewProfileDetails(favUser)} className="view-details-button">
-                    View Details
-                  </button>
-                  <button onClick={() => toggleFavorite(favUser)} className="remove-favorite-button" aria-label="Remove from favorites">
-                    Remove from Favorites
-                  </button>
+                  <div className="favorite-buttons">
+                    <button onClick={() => viewProfileDetails(favUser)} className="view-details-button">
+                      View Details
+                    </button>
+                    <button onClick={() => toggleFavorite(favUser)} className="favorite-button" aria-label="Remove from favorites">
+                      ⭐ Remove
+                    </button>
+                  </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
       )}
+
+      {/* Multiple Profiles Section */}
+      {showMultipleProfiles && multipleProfiles.length > 0 && (
+        <div className="multiple-profiles-section">
+          <h2 className="multiple-profiles-title">Random Profiles</h2>
+          <div className="multiple-profiles-grid">
+            {multipleProfiles.map((profile, index) => (
+              <motion.div
+                key={index}
+                className="multiple-profile-card"
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ scale: 1.05, y: -10, transition: { duration: 0.2 } }}
+                whileTap={{ scale: 0.95, transition: { duration: 0.1 } }}
+              >
+                <img src={profile.picture.large} alt={`${profile.name.first} ${profile.name.last}`} className="multiple-profile-picture" />
+                <div className="multiple-profile-info">
+                  <h3 className="multiple-profile-name">{profile.name.first} {profile.name.last}</h3>
+                  <p className="multiple-profile-country">🌍 {profile.location.country}</p>
+                  <p className="multiple-profile-email">📧 {profile.email}</p>
+                  <p className="multiple-profile-age">🎂 {profile.dob.age} years old</p>
+                  <div className="multiple-profile-buttons">
+                    <button onClick={() => viewProfileDetails(profile)} className="view-details-button">
+                      View Details
+                    </button>
+                    <button onClick={() => toggleFavorite(profile)} className="favorite-button" aria-label={isFavorite(profile) ? 'Remove from favorites' : 'Add to favorites'}>
+                      {isFavorite(profile) ? '⭐ Remove' : '☆ Add Favorite'}
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {galleryUsers.length > 0 && (
         <div className="gallery-section">
           <h2 className="gallery-title">Profile Gallery</h2>
@@ -463,6 +554,37 @@ function App() {
           </div>
         </motion.div>
       )}
+
+      {/* Back to Top FAB */}
+      <AnimatePresence>
+        {showBackToTop && (
+          <motion.button
+            className="back-to-top-fab"
+            onClick={scrollToTop}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.3 }}
+            aria-label="Back to top"
+          >
+            ↑ Back to Top
+          </motion.button>
+        )}
+      </AnimatePresence>
+
+      {/* Toast Container */}
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
       </motion.div>
     </AnimatePresence>
   );
