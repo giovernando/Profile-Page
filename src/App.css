@@ -297,69 +297,96 @@
 
 .favorites-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2rem;
+  justify-items: center;
 }
 
 .favorite-card {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 15px;
-  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  padding: 2rem;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 1rem;
-  backdrop-filter: blur(10px);
-  transition: transform 0.3s ease;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  gap: 1.5rem;
+  backdrop-filter: blur(15px);
+  transition: all 0.3s ease;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  max-width: 320px;
+  width: 100%;
 }
 
 .favorite-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.25);
 }
 
 .favorite-picture {
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
-  border: 3px solid rgba(255, 255, 255, 0.5);
+  border: 4px solid rgba(255, 255, 255, 0.6);
+  transition: transform 0.3s ease;
+}
+
+.favorite-picture:hover {
+  transform: scale(1.1);
 }
 
 .favorite-info {
-  flex: 1;
+  text-align: center;
+  width: 100%;
 }
 
 .favorite-name {
   color: white;
-  font-size: 1.5rem;
-  margin: 0 0 0.5rem 0;
+  font-size: 1.6rem;
+  margin: 0 0 0.75rem 0;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  font-weight: 600;
 }
 
 .favorite-country, .favorite-email, .favorite-age {
-  color: rgba(255, 255, 255, 0.8);
-  margin: 0.25rem 0;
-  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0.4rem 0;
+  font-size: 0.95rem;
+  font-weight: 500;
 }
 
 .favorite-info .view-details-button {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  padding: 0.8rem 1.5rem;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+}
+
+.favorite-info .view-details-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .remove-favorite-button {
-  background: rgba(255, 0, 0, 0.2);
+  background: rgba(255, 0, 0, 0.25);
   color: white;
-  border: 1px solid rgba(255, 0, 0, 0.5);
-  border-radius: 10px;
-  padding: 0.5rem 1rem;
+  border: 1px solid rgba(255, 0, 0, 0.6);
+  border-radius: 25px;
+  padding: 0.8rem 1.5rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
+  font-weight: 600;
   backdrop-filter: blur(10px);
 }
 
 .remove-favorite-button:hover {
-  background: rgba(255, 0, 0, 0.3);
-  border-color: rgba(255, 0, 0, 0.8);
+  background: rgba(255, 0, 0, 0.4);
+  border-color: rgba(255, 0, 0, 0.9);
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
 }
 
 .gallery-section {
@@ -676,8 +703,8 @@
   }
 
   .favorite-picture {
-    width: 70px;
-    height: 70px;
+    width: 90px;
+    height: 90px;
   }
 
   .favorite-name {

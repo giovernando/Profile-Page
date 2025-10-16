@@ -1,5 +1,7 @@
-# TODO: Implement Accessible Design (A11y) Improvements
+# TODO: Improve Layout and Styling for Random User and Favorite Profiles
 
-- [x] Add ARIA labels to buttons with non-descriptive text (e.g., close button, favorite toggle)
-- [x] Ensure high color contrast for text and backgrounds
-- [x] Implement adaptive dark/light theme based on system preference
+- [x] Make grid layout more consistent between hero section and favorites
+- [x] Create uniform card styling for favorites similar to hero section but smaller
+- [x] Add consistent spacing, padding, and alignment
+- [x] Add hover effects for better interactivity
+- [x] Ensure typography consistency across components
